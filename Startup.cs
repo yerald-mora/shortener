@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using nativoshortener.api.Persistance;
+using nativoshortener.api.Services;
 
 namespace nativoshortener.api
 {
@@ -24,6 +25,7 @@ namespace nativoshortener.api
 
             services.AddControllers();
             services.AddDbContext<NativoDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("nativoshortener")));
+            services.AddSingleton<IURLEncoder, HashIdURLEncoder>();
 
             services.AddSwaggerGen(c =>
             {

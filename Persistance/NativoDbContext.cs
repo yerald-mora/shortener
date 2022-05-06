@@ -22,12 +22,32 @@ namespace nativoshortener.api.Persistance
         {
             base.OnModelCreating(builder);
 
+            #region ShortenedUrl
+
             builder.Entity<ShortenedUrl>().HasKey(s => s.Id);
 
+            builder.Entity<ShortenedUrl>()
+                .Property(s => s.Id)
+                .ValueGeneratedNever();
+
+            builder.Entity<ShortenedUrl>()
+                .Property(s => s.URL)
+                .HasMaxLength(2000);
+            
+            builder.Entity<ShortenedUrl>()
+                .Property(s => s.ShortCode)
+                .HasMaxLength(150);
+
+            #endregion
+
+
+            #region Visit
             builder.Entity<Visit>()
                 .HasOne(v => v.ShortenedUrl)
                 .WithMany(s => s.Visits)
                 .HasForeignKey(v => v.ShortenedUrlId);
+
+            #endregion
         }
     }
 }
