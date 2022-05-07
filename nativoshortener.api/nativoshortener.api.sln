@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32407.337
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nativoshortener.api", "nativoshortener.api.csproj", "{61DE58E2-8253-4EB9-9ED2-4BA10FAC54F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nativoshortener.api", "nativoshortener.api.csproj", "{61DE58E2-8253-4EB9-9ED2-4BA10FAC54F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "nativoshortener.web", "..\nativoshortener.web\nativoshortener.web.csproj", "{00360080-F86D-419B-9CBD-52351E8A0CE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{61DE58E2-8253-4EB9-9ED2-4BA10FAC54F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61DE58E2-8253-4EB9-9ED2-4BA10FAC54F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61DE58E2-8253-4EB9-9ED2-4BA10FAC54F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00360080-F86D-419B-9CBD-52351E8A0CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00360080-F86D-419B-9CBD-52351E8A0CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00360080-F86D-419B-9CBD-52351E8A0CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00360080-F86D-419B-9CBD-52351E8A0CE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
