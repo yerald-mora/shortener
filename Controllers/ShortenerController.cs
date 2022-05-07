@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using nativoshortener.api.DTOs;
 using nativoshortener.api.Models;
 using nativoshortener.api.Persistance;
 using nativoshortener.api.Services;
@@ -58,7 +60,35 @@ namespace nativoshortener.api.Controllers
 
             var shortenedUrl = await _context.ShortenedUrls.FindAsync(id);
 
-            return (shortenedUrl == null) ? BadRequest("Invalid shortcode.") : Ok(shortenedUrl.URL);
+            if (shortenedUrl == null)
+                return BadRequest("Invalid shortcode.");
+
+            await AddURLVisit(id);
+            return Ok(shortenedUrl.URL);
+        }
+
+        [HttpGet("top20mostvisited")]
+        public async Task<ActionResult<IEnumerable<MostVisitedDTO>>> Get20MostVisited()
+        {
+            var mostVisiteds = new List<MostVisitedDTO>();
+
+            var visits = await _context.ShortenedUrls
+                .Include(s => s.Visits)
+                .OrderByDescending(s => s.Visits.Count)
+                .Take(20)
+                .ToListAsync();
+
+            foreach (var v in visits)
+            {
+                mostVisiteds.Add(new MostVisitedDTO()
+                {
+                    URL = v.URL,
+                    ShortCode = v.ShortCode,
+                    Visits = v.Visits.Count
+                });
+            }
+
+            return mostVisiteds;
         }
 
         private bool IsValidUrl(string url)
@@ -71,6 +101,18 @@ namespace nativoshortener.api.Controllers
             int? maxId = _context.ShortenedUrls.Max(s => (int?)s.Id);
 
             return (maxId ?? 0) + 1;
+        }
+
+        private async Task AddURLVisit(int shortenedUrlId)
+        {
+            var visit = new Visit()
+            {
+                VisitDate = DateTime.Now,
+                ShortenedUrlId = shortenedUrlId
+            };
+
+            _context.Visits.Add(visit);
+            await _context.SaveChangesAsync();
         }
 
     }
