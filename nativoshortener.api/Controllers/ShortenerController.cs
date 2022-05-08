@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using nativoshortener.api.DTOs;
 using nativoshortener.api.Models;
@@ -14,12 +15,13 @@ namespace nativoshortener.api.Controllers
 {
     [ApiController]
     [Route("api/shortener")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ShortenerController : Controller
     {
         private readonly NativoDbContext _context;
         private readonly IURLEncoder _encoder;
 
-        public ShortenerController(NativoDbContext context,IURLEncoder encoder)
+        public ShortenerController(NativoDbContext context, IURLEncoder encoder)
         {
             _context = context;
             _encoder = encoder;
@@ -40,7 +42,8 @@ namespace nativoshortener.api.Controllers
 
             int id = GetNextId();
 
-            shortenedUrl = new ShortenedUrl() {
+            shortenedUrl = new ShortenedUrl()
+            {
                 Id = id,
                 CreationDate = DateTime.Today,
                 URL = url,

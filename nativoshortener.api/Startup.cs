@@ -1,12 +1,16 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using nativoshortener.api.Persistance;
 using nativoshortener.api.Services;
+using System.Text;
 
 namespace nativoshortener.api
 {
@@ -26,6 +30,20 @@ namespace nativoshortener.api
             services.AddControllers();
             services.AddDbContext<NativoDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("nativoshortener")));
             services.AddSingleton<IURLEncoder, HashIdURLEncoder>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["tokenKey"]))
+                });
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<NativoDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddSwaggerGen(c =>
             {
