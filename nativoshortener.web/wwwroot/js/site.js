@@ -6,8 +6,10 @@ addEvents();
 
 function addEvents() {
     const btnShortenUrl = document.querySelector("#btnShortenUrl");
+    const btnTop20MostVisited = document.querySelector("#btnTop20MostVisited");
 
     btnShortenUrl.addEventListener('click', ShortenUrl);
+    btnTop20MostVisited.addEventListener('click', GetTop20MostVisited);
 }
 
 function ShortenUrl() {
@@ -32,4 +34,29 @@ async function fetchShortenUrl(url) {
         throw new Error(`😢 something went wrong...${response.status}`);
 
     return await response.json();
+}
+
+function GetTop20MostVisited() {
+    fetch("/Index?handler=Top20MostVisited")
+        .then(response => response.json())
+        .then(data => drawTable(data));
+}
+
+function drawTable(json) {
+    const table = document.querySelector("#results");
+    const result = JSON.parse(json);
+
+    table.querySelectorAll(".row-link").forEach(r => r.remove());
+
+    result.forEach(element => {
+        const row = table.insertRow();
+        const url = row.insertCell(0)
+        const visits = row.insertCell(1)
+        const shortcode = row.insertCell(2)
+
+        row.classList += "row-link";
+        url.innerHTML = element.url;
+        visits.innerHTML = element.visits;
+        shortcode.innerHTML = element.shortCode;
+    });
 }

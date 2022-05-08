@@ -34,6 +34,18 @@ namespace nativoshortener.web.Pages
 
         }
 
+        public async Task<IActionResult> OnGetTop20MostVisitedAsync()
+        {
+            using (var httpClient = _httpClientFactory.CreateClient())
+            {
+                var response = await httpClient.GetAsync($"{_apiUrl}/shortener/top20mostvisited");
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                return new JsonResult(responseBody);
+            }
+
+        }
+
         public async Task<IActionResult> OnPostShortenUrlAsync([FromBody] string url)
         {
             string json = JsonConvert.SerializeObject(url);
