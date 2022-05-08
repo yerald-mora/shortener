@@ -23,8 +23,14 @@ namespace nativoshortener.web.Pages
             _apiUrl = configuration["apiurl"];
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            string path = string.Join("",Request.Path.Value.SkipWhile(c => c == '/'));
+
+            if (path == string.Empty || path == "Index")
+                return Page(); 
+
+           return await RedirectShortCode(path);
 
         }
 
@@ -46,7 +52,23 @@ namespace nativoshortener.web.Pages
                 
                 return new JsonResult($"{Request.Headers["Referer"]}{responseBody}");
             }
+        }
 
+        private async Task<IActionResult> RedirectShortCode(string shortCode)
+        {
+            HttpResponseMessage response;
+
+            using (var httpClient = _httpClientFactory.CreateClient())
+            {
+                response = await httpClient.GetAsync($"{_apiUrl}/shortener/geturl?shortCode={shortCode}");
+            }
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                return Redirect("/Index");
+
+            return Redirect(responseBody);
         }
     }
 }
