@@ -52,7 +52,7 @@ namespace nativoshortener.api.Controllers
                 return BuildToken(user.Id,user.UserName);
             }
 
-            return BadRequest("Wrogn user or password");
+            return BadRequest("Wrong user or password");
         }
 
         private TokenDTO BuildToken(string userId, string userName)

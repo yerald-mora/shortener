@@ -78,6 +78,7 @@ namespace nativoshortener.api.Controllers
             var visits = await _context.ShortenedUrls
                 .Include(s => s.Visits)
                 .OrderByDescending(s => s.Visits.Count)
+                .Where(s => s.Visits.Count > 0)
                 .Take(20)
                 .ToListAsync();
 
