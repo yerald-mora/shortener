@@ -30,9 +30,11 @@ async function fetchShortenUrl(url) {
         body: JSON.stringify(url)
     });
 
-    if (!response.ok)
-        throw new Error(`😢 something went wrong...${response.status}`);
-
+    if (!response.ok) {
+        const message = await response.text();
+        throw new Error(`😢 something went wrong...${message}`);
+    }
+        
     return await response.json();
 }
 

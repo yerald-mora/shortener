@@ -57,8 +57,13 @@ namespace nativoshortener.web.Pages
 
             var response = await _httpClient.SendAsync(request);
             var responseBody = await response.Content.ReadAsStringAsync();
-                
-            return new JsonResult($"{Request.Headers["Referer"]}{responseBody}");
+
+            if (!response.IsSuccessStatusCode)
+                return BadRequest(responseBody);
+
+            string fullHostName = $"{Request.Scheme}://{Request.Host}";
+
+            return new JsonResult($"{fullHostName}/{responseBody}");
         }
 
         private async Task<IActionResult> RedirectShortCode(string shortCode)

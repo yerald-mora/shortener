@@ -53,14 +53,14 @@ namespace nativoshortener.web.Pages.Account
 
             HttpContext.Session.SetString("Token", token.Token);
 
-            return Redirect("/Index");
+            return Redirect("/");
         }
 
         public IActionResult OnPostLogoutAsync()
         {
             HttpContext.Session.Remove("Token");
 
-            return Page();
+            return Redirect("/");
         }
     }
 }
