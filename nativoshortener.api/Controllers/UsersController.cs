@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 
 namespace nativoshortener.api.Controllers
 {
-    public class UsersController : Controller
+    [ApiController]
+    [Route("api/users")]
+    public class UsersController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;

@@ -16,7 +16,7 @@ namespace nativoshortener.api.Controllers
     [ApiController]
     [Route("api/shortener")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class ShortenerController : Controller
+    public class ShortenerController : ControllerBase
     {
         private readonly NativoDbContext _context;
         private readonly IURLEncoder _encoder;
