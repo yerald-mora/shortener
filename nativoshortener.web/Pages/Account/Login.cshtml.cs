@@ -48,5 +48,12 @@ namespace nativoshortener.web.Pages.Account
 
             return Redirect("/Index");
         }
+
+        public IActionResult OnPostLogoutAsync()
+        {
+            HttpContext.Session.Remove("Token");
+
+            return Page();
+        }
     }
 }
