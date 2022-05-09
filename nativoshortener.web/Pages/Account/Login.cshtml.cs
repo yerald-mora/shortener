@@ -41,6 +41,13 @@ namespace nativoshortener.web.Pages.Account
             };
 
             var response = await _httpClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError("LoginFailed", response.Content.ReadAsStringAsync().Result);
+                return Page();
+            }
+
             var responseBody = await response.Content.ReadAsStringAsync();
             var token = JsonConvert.DeserializeObject<TokenDTO>(responseBody);
 
